@@ -1,6 +1,9 @@
 para instalar ejecutar el siguiente comando en la carpeta o importar con algun IDE de java como proyecto maven
 
-mvn install
+mvn clean install
+mvn spring-boot:run
+
+luego para levantar el server se ejecuta lo siguiente (en la carpeta donde se encuentra )
 
 Para ver los datos se puede consultar las siguientes url con postman o desde la web
 http://localhost:8088/securityapp/api/parametros
