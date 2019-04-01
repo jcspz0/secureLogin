@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.mis13.securityapp.entity.UsuarioVO;
+import com.mis13.securityapp.entity.ChangePasswordVO;
 import com.mis13.securityapp.entity.LoginVO;
 import com.mis13.securityapp.model.Parametro;
 import com.mis13.securityapp.model.Usuario;
@@ -73,12 +74,23 @@ public class UsuarioController {
 	
 	@PostMapping("usuario/login")
 	public ResponseEntity<Void> validLogin(@RequestBody LoginVO login, UriComponentsBuilder builder) {
-                boolean flag = usuarioService.validLogin(login.getUser(), login.getPassword());
+                boolean flag = usuarioService.validLogin(login);
                 if (flag == false) {
                 	return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
                 }
                 HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(builder.path("/person/{id}").buildAndExpand(login.getUser()).toUri());
+                headers.setLocation(builder.path("/usuario/{id}").buildAndExpand(login.getUser()).toUri());
+                return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	}
+	
+	@PostMapping("usuario/changePassword")
+	public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordVO data, UriComponentsBuilder builder) {
+                boolean flag = usuarioService.changePassword(data);
+                if (flag == false) {
+                	return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+                }
+                HttpHeaders headers = new HttpHeaders();
+                headers.setLocation(builder.path("/usuario/{id}").buildAndExpand(data.getUser()).toUri());
                 return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
 

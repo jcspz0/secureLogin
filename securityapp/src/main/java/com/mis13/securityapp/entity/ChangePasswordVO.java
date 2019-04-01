@@ -6,13 +6,15 @@ import javax.persistence.Id;
 
 import com.mis13.securityapp.model.Usuario;
 
-public class LoginVO {
+public class ChangePasswordVO {
 	
 	private String user;
 	
 	private String password;
 	
-	public LoginVO() {
+	private String newPassword;
+	
+	public ChangePasswordVO() {
 		super();
 	}
 
@@ -31,5 +33,15 @@ public class LoginVO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	
+	
 	
 }

@@ -18,6 +18,8 @@ import javax.crypto.spec.PBEKeySpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mis13.securityapp.entity.ChangePasswordVO;
+import com.mis13.securityapp.entity.LoginVO;
 import com.mis13.securityapp.entity.UsuarioVO;
 import com.mis13.securityapp.model.Parametro;
 import com.mis13.securityapp.model.Usuario;
@@ -143,16 +145,33 @@ public class UsuarioServiceImpl implements UsuarioService{
 	}
 
 	@Override
-	public boolean validLogin(String user, String pass) {
+	public boolean validLogin(LoginVO login) {
 		Usuario usuario= new Usuario();
-		List<Usuario> list =  usuarioRepository.fetchUserByLoginUsr(user);
+		List<Usuario> list =  usuarioRepository.fetchUserByLoginUsr(login.getUser());
 		if (list.size() > 0) {
 			usuario = list.get(0);
-			return usuario.getPwdUsr().compareTo(encryptPassword(pass)) == 0;
+			return usuario.getPwdUsr().compareTo(encryptPassword(login.getPassword())) == 0;
         }else {
         	return false;
         }
 		
+	}
+
+	@Override
+	public boolean changePassword(ChangePasswordVO user) {
+		Usuario usuario= new Usuario();
+		List<Usuario> list =  usuarioRepository.fetchUserByLoginUsr(user.getUser());
+		if (list.size() > 0) {
+			usuario = list.get(0);
+			System.out.println("nuevo pass "+user.getNewPassword());
+			//realizar validaciones
+			usuario.setPwdUsr(encryptPassword(user.getNewPassword()));
+			//coordinar con frontend para validar que retornar en cada caso
+			usuarioRepository.save(usuario);
+			return true;
+        }else {
+        	return false;
+        }
 	}
 	
 }
